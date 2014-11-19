@@ -279,6 +279,8 @@ public class FileGui extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField3;
     private javax.swing.JButton okButton;
     private javax.swing.JTextField portServer;
+    
+    
     private javax.swing.JTextField username;
     // End of variables declaration                   
 }
