@@ -17,12 +17,16 @@ public class objekClientServer implements Serializable{
     }
     private static final long serialVersionUID = 1L;
     private String username;
+    private String passw;
     private String destinationDirectory;
     private String sourceDirectory;
     private String filename;
     private long fileSize;
     private byte[] fileData;
     private String status;
+    private String perintah;
+    private String respon;
+    private String namaFolder;
 
     /**
      * @return the username
@@ -120,6 +124,62 @@ public class objekClientServer implements Serializable{
      */
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    /**
+     * @return the passw
+     */
+    public String getPassw() {
+        return passw;
+    }
+
+    /**
+     * @param passw the passw to set
+     */
+    public void setPassw(String passw) {
+        this.passw = passw;
+    }
+
+    /**
+     * @return the perintah
+     */
+    public String getPerintah() {
+        return perintah;
+    }
+
+    /**
+     * @param perintah the perintah to set
+     */
+    public void setPerintah(String perintah) {
+        this.perintah = perintah;
+    }
+
+    /**
+     * @return the respon
+     */
+    public String getRespon() {
+        return respon;
+    }
+
+    /**
+     * @param respon the respon to set
+     */
+    public void setRespon(String respon) {
+        this.respon = respon;
+    }
+
+    /**
+     * @return the namaFolder
+     */
+    public String getNamaFolder() {
+        return namaFolder;
+    }
+
+    /**
+     * @param namaFolder the namaFolder to set
+     */
+    public void setNamaFolder(String namaFolder) {
+        this.namaFolder = namaFolder;
     }
     
 }
