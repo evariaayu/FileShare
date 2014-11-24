@@ -38,13 +38,14 @@ public class ThreadClient implements Runnable {
     private FileOutputStream fileOutputStream = null;
     
     private ArrayList<String> listUserName;
-    
+    private ArrayList<String> listFiles;
     public ThreadClient(Socket sockClient, ArrayList<ThreadClient> alThread)
     {
         this.sockClient = sockClient;
         this.alThread = alThread;
         this.sa = sockClient.getRemoteSocketAddress();
         this.listUserName = new ArrayList<>();
+        this.listFiles = new ArrayList<>();
     }
      
 
@@ -65,8 +66,9 @@ public class ThreadClient implements Runnable {
                     this.namaUser = ocs.getUsername();
                     System.out.println("USER " + ocs.getUsername());
                     File file = new File("f:/userpass.dat");
-                    System.out.println(file.getName());
-                    System.out.println(file);
+                    //System.out.println(ocs.getDestinationDirectory());
+                 //   System.out.println(file.getName());
+                 //   System.out.println(file);
                     if(file.isFile()){
                         DataInputStream diStream = new DataInputStream(new FileInputStream(file));
                         int len = (int) file.length();
@@ -80,18 +82,31 @@ public class ThreadClient implements Runnable {
                         String user =new String(fileBytes);
                         String[] aluserpass= user.split("\r\n");
                         String statlogin= "GAGAL";
-                        System.out.println(ocs.getUsername()+":"+ocs.getPassw());
+                        //System.out.println(ocs.getUsername()+":"+ocs.getPassw());
                         for(int i=0;i<aluserpass.length;i++)
                         {
-                            System.out.println("cek user ke"+(i+1));
+                           // System.out.println("cek user ke"+(i+1));
                             if(aluserpass[i].equals(ocs.getUsername()+":"+ocs.getPassw()))
                             {
+                              //  ocs.setRespon("LOGIN SUCCESS");
                                 System.out.println("login sukses");
                                 statlogin="OK";
+                              //  System.out.println(ocs.getDestinationDirectory());
+                                String folderUser = ocs.getDestinationDirectory()+ocs.getNamaFolder();
+                                if(!new File(ocs.getDestinationDirectory()+ocs.getNamaFolder()).exists()){
+                                //        System.out.println("masuk if");
+                                    new File(ocs.getDestinationDirectory()+ocs.getNamaFolder()).mkdirs();
+                                    System.out.println("Folder sudah dibuat");
+                                }
                                 break;
                             }
                         }
-                        if(statlogin.equals("OK"))System.out.println("USER OK");
+                        if(statlogin.equals("OK"))
+                        {
+                            System.out.println("USER OK");
+                        //    System.out.println("Folder sudah dibuat");
+                        }
+                            
                         else System.out.println("USER GAGAL");
                       /*  for(int i = 0; i<alThread.size();i++)
                         {
@@ -104,9 +119,9 @@ public class ThreadClient implements Runnable {
                     if(ocs.getStatus().equalsIgnoreCase("Error")){
                         System.out.println("Error occured..");
                     }
-                    String outputFile = ocs.getDestinationDirectory()+ocs.getFilename();
-                    if(!new File(ocs.getDestinationDirectory()).exists()){
-                        new File(ocs.getDestinationDirectory()).mkdirs();
+                    String outputFile = ocs.getDestinationDirectory()+ocs.getNamaFolder()+"/"+ocs.getFilename();
+                    if(!new File(ocs.getDestinationDirectory()+ocs.getNamaFolder()).exists()){
+                        new File(ocs.getDestinationDirectory()+ocs.getNamaFolder()).mkdirs();
                     }
                     dstFile = new File(outputFile);
                     fileOutputStream = new FileOutputStream(dstFile);
@@ -116,19 +131,90 @@ public class ThreadClient implements Runnable {
                     System.out.println("Output file : " + outputFile + "is successfully saved");
                 }
                 if(ocs.getPerintah().equals("LISTUSER")){
-                    System.out.println("masuk listuser");
+                  //  System.out.println("masuk listuser");
                     for(int i = 0; i<alThread.size();i++)
                     {
-                        System.out.println("masuk situ");
+                       // System.out.println("masuk situ");
                         listUserName.add(alThread.get(i).namaUser);
                     }
                     outputStream.writeObject(listUserName);
-                    System.out.println("hehe");
+                   // System.out.println("hehe");
+                }
+                if(ocs.getPerintah().equals("LISTFOLDER")){
+                   // System.out.println("masuk listfolder");
+                    String filess = ocs.getDestinationDirectory()+ocs.getUsername();
+                    //System.out.println(filess);
+                    File directory = new File(filess);
+                    File[] fList = directory.listFiles();
+                    
+                    for(File file : fList)
+                    {
+                        if (file.isFile())
+                        {
+                            // System.out.println(file.getName());
+                        //    System.out.println(file.getCanonicalPath());
+                             listFiles.add(file.getName());
+                        }                                      
+                    }
+                    outputStream.writeObject(listFiles);
+                }
+                if(ocs.getPerintah().equals("DOWNLOAD"))
+                {
+                    String inputFile = ocs.getDestinationDirectory()+ocs.getUsername()+"/"+ocs.getNamaPilihan();
+                    System.out.println(inputFile);
+                    String destinationFolder = "C:/Users/";
+                    destinationFolder = destinationFolder.concat(System.getProperty("user.name"));
+                    destinationFolder = destinationFolder.concat("/Downloads/");
+                    ocs.setSourceDirectory(inputFile);
+                    ocs.setDestinationDirectory(destinationFolder);
+                    ocs.setFilename(ocs.getNamaPilihan());
+                    File files = new File(inputFile);
+                    if(files.isFile()){
+                        DataInputStream dis = new DataInputStream(new FileInputStream(files));
+                        long len = (int) files.length();
+                        byte[] fileBytes = new byte[(int) len];
+                        dis.readFully(fileBytes, 0, (int) len);
+                        ocs.setFileData(fileBytes);
+                        ocs.setFileSize(len);
+                        ocs.setStatus("Success");
+                    }
+                    else{
+                        System.out.println("path specified is not pointing to a file");
+                        ocs.setStatus("Error");
+                    }
+                    outputStream.writeObject(ocs);
+                    outputStream.flush();
+                    outputStream.reset();
+
+                }
+                if(ocs.getPerintah().equals("UPLOADBROADCAST")){
+                    
+                    if(ocs.getStatus().equalsIgnoreCase("Error")){
+                        System.out.println("Error occured..");
+                    }
+                    for(int i = 0; i<alThread.size();i++)
+                    {
+                       // System.out.println("masuk situ");
+                        ocs.setNamaFolder(alThread.get(i).namaUser);
+                        //listUserName.add(alThread.get(i).namaUser);
+                        String outputFile = ocs.getDestinationDirectory()+ocs.getNamaFolder()+"/"+ocs.getFilename();
+                         if(!new File(ocs.getDestinationDirectory()+ocs.getNamaFolder()).exists()){
+                        new File(ocs.getDestinationDirectory()+ocs.getNamaFolder()).mkdirs();
+                        }
+                        dstFile = new File(outputFile);
+                        fileOutputStream = new FileOutputStream(dstFile);
+                        fileOutputStream.write(ocs.getFileData());
+                        fileOutputStream.flush();
+                        fileOutputStream.close();
+                        System.out.println("Output file : " + outputFile + " is successfully saved");
+                    }
+                    
                 }
                } 
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(ThreadClient.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
             
         /*    while((msg = br.readLine())!= null)
             {
