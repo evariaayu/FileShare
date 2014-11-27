@@ -70,6 +70,7 @@ public class FileGui extends javax.swing.JFrame {
         portServer = new javax.swing.JTextField();
         okButton = new javax.swing.JButton();
         clearButton = new javax.swing.JButton();
+        EXIT = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         passUser = new javax.swing.JPasswordField();
         jSeparator1 = new javax.swing.JSeparator();
@@ -87,6 +88,7 @@ public class FileGui extends javax.swing.JFrame {
         downloadBtn = new javax.swing.JButton();
 
         jTextField3.setText("jTextField3");
+
 
         jButton2.setText("jButton2");
 
@@ -423,7 +425,13 @@ public class FileGui extends javax.swing.JFrame {
 
     private void passUserActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
-    }                                        
+    }
+    
+    private void EXITActionPerformed(java.awt.event.ActionEvent evt) {                                     
+        // TODO add your handling code here:
+        objekCS.setPerintah("EXIT");
+        System.exit(0);
+    }   
     
     /**
      * @param args the command line arguments
@@ -462,6 +470,7 @@ public class FileGui extends javax.swing.JFrame {
 
     // Variables declaration - do not modify                     
     private javax.swing.JPanel Download;
+    private javax.swing.JButton EXIT;
     private javax.swing.JList ListUpload;
     private javax.swing.JPanel Upload;
     private javax.swing.JButton browseFileBtn;
