@@ -394,11 +394,31 @@ public class FileGui extends javax.swing.JFrame {
             
         }                
     }                                             
-
+    
+    private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {                                           
+        objekCS.setPerintah("LISTFOLDER");
+        objekCS.setDestinationDirectory(destinationPath);
+        objekCS.setUsername(username.getText());
+        try {
+            outputStream.writeObject(objekCS);
+            outputStream.flush();
+            outputStream.reset();
+            listFiless = new DefaultListModel();
+            ArrayList<String> listFile = new ArrayList<>();
+            listFile = (ArrayList<String>) inputStream.readObject();
+            for (int i = 0; i < listFile.size(); i++) {
+                listFiless.addElement(listFile.get(i));
+            }
+            listDownload.setModel(listFiless);
+        } catch (IOException ex) {
+            Logger.getLogger(FileGui.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FileGui.class.getName()).log(Level.SEVERE, null, ex);
+        }  
+    } 
+    
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {                                              
-        // TODO add your handling code here:
         objekCS.setPerintah("LISTUSER");
-        
         try {
             outputStream.writeObject(objekCS);
             outputStream.flush();
@@ -419,8 +439,6 @@ public class FileGui extends javax.swing.JFrame {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(FileGui.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
     }                                             
 
     private void passUserActionPerformed(java.awt.event.ActionEvent evt) {                                         
