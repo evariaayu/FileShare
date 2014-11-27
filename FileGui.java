@@ -341,10 +341,32 @@ public class FileGui extends javax.swing.JFrame {
             objekCS.setPerintah("UPLOAD");
             if(file.isFile()){
                 try {
+                    JProgressBar progressBar;
+                    int i = 0, num = 0;
                     DataInputStream dis = new DataInputStream(new FileInputStream(file));
                     long len = (int) file.length();
+                    
+                    final JFrame f = new JFrame("Sample");
+                    f.getContentPane().setLayout(new FlowLayout());
+                    progressBar = new JProgressBar(0, (int) len);
+                    f.getContentPane().add(progressBar);
+                    f.pack();
+                    
+                    progressBar.setBounds(12,238,340,15);  
+                    progressBar.setValue(0);
+                    progressBar.setStringPainted(true);
+                    add(progressBar);  
+                    setLayout(null);  
+                    progressBar.setVisible(true); 
+                    while(i <= len){  
+                        progressBar.setValue(i);  
+                        i = i + 500;  
+                        progressBar.update(progressBar.getGraphics());
+                    } 
+                    
                     byte[] fileBytes = new byte[(int) len];
                     dis.readFully(fileBytes, 0, (int) len);
+                    
                     objekCS.setFileData(fileBytes);
                     objekCS.setFileSize(len);
                     objekCS.setStatus("Success");
