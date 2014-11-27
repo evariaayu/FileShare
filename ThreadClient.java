@@ -36,6 +36,7 @@ public class ThreadClient implements Runnable {
     private String namaUser = null;
     private File dstFile = null;
     private FileOutputStream fileOutputStream = null;
+    private String statlogin = null;
     
     private ArrayList<String> listUserName;
     
@@ -79,7 +80,8 @@ public class ThreadClient implements Runnable {
                       }
                         String user =new String(fileBytes);
                         String[] aluserpass= user.split("\r\n");
-                        String statlogin= "GAGAL";
+                        //String statlogin= "GAGAL";
+                        statlogin= "GAGAL";
                         System.out.println(ocs.getUsername()+":"+ocs.getPassw());
                         for(int i=0;i<aluserpass.length;i++)
                         {
@@ -120,12 +122,21 @@ public class ThreadClient implements Runnable {
                     for(int i = 0; i<alThread.size();i++)
                     {
                         System.out.println("masuk situ");
+                         if((alThread.get(i).statlogin).equals("OK")){
+                            //if(!alThread.isEmpty()){
+                            listUserName.add(alThread.get(i).namaUser);
+                         }
                         listUserName.add(alThread.get(i).namaUser);
                     }
                     outputStream.writeObject(listUserName);
                     System.out.println("hehe");
                 }
-               } 
+               }
+               if(ocs.getPerintah().equals("EXIT")){
+                    System.out.println("masuk perintah EXIT");
+                    statlogin="GAGAL";
+                    sockClient.close();
+                }
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(ThreadClient.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -145,6 +156,8 @@ public class ThreadClient implements Runnable {
             }
         } catch (IOException ex) {
             Logger.getLogger(ThreadClient.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("disconnected");
+            //this.alThread.remove(this);
         }
         
     }
