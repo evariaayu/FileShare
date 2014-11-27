@@ -132,6 +132,24 @@ public class ThreadClient implements Runnable {
                     System.out.println("hehe");
                 }
                }
+               if(ocs.getPerintah().equals("LISTFOLDER")){
+                    //System.out.println("masuk listfolder");
+                    String filess = ocs.getDestinationDirectory()+ocs.getUsername();
+                    //System.out.println(filess);
+                    File directory = new File(filess);
+                    File[] fList = directory.listFiles();
+                    
+                    for(File file : fList)
+                    {
+                        if (file.isFile())
+                        {
+                            //System.out.println(file.getName());
+                            //System.out.println(file.getCanonicalPath());
+                             listFiles.add(file.getName());
+                        }                                      
+                    }
+                    outputStream.writeObject(listFiles);
+                }
                if(ocs.getPerintah().equals("EXIT")){
                     System.out.println("masuk perintah EXIT");
                     statlogin="GAGAL";
