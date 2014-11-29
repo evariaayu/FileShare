@@ -27,7 +27,8 @@ public class objekClientServer implements Serializable{
     private String perintah;
     private String respon;
     private String namaFolder;
-
+    private String namaPilihan;
+    
     /**
      * @return the username
      */
@@ -182,4 +183,17 @@ public class objekClientServer implements Serializable{
         this.namaFolder = namaFolder;
     }
     
+    /**
+     * @return the namaPilihan
+     */
+    public String getNamaPilihan() {
+        return namaPilihan;
+    }
+
+    /**
+     * @param namaPilihan the namaPilihan to set
+     */
+    public void setNamaPilihan(String namaPilihan) {
+        this.namaPilihan = namaPilihan;
+    }
 }
