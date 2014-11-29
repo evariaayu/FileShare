@@ -122,7 +122,7 @@ public class ThreadClient implements Runnable {
                     for(int i = 0; i<alThread.size();i++)
                     {
                         System.out.println("masuk situ");
-                         if((alThread.get(i).statlogin).equals("OK")){
+                         if((alThread.get(i).statlogin).equals("OK") && !alThread.get(i).namaUser.equals(getNamaUser())){
                             //if(!alThread.isEmpty()){
                             listUserName.add(alThread.get(i).namaUser);
                          }
