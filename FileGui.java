@@ -5,8 +5,7 @@
  */
 package filesharingclient;
 
-import java.awt.Component;
-import java.io.BufferedInputStream;
+import java.awt.FlowLayout;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -22,9 +21,8 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.JFrame;
+import javax.swing.JProgressBar;
 import objekClientServer.objekClientServer;
 
 /**
@@ -39,8 +37,8 @@ public class FileGui extends javax.swing.JFrame {
     private ObjectInputStream inputStream = null;
     public String destinationPath ="E:/tmp/downloads/";
     public String sourcePath;
-    private JList list;
     private DefaultListModel listModel;
+    private DefaultListModel listFiless;
     /**
      * Creates new form FileGui
      */
